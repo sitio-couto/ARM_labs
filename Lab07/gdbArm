@@ -1,0 +1,14 @@
+source /home/specg12-1/mc404/simulador/set_path.sh
+arm-eabi-as ra188115.s -o ra188115.o -g
+arm-eabi-ld ra188115.o -o ra188115 -Ttext=0x77802000 -Tdata=0x77803000 -g
+mksd.sh --so /home/specg12-1/mc404/simulador/dummyos.elf --user ra188115
+arm-sim -g --rom=/home/specg12-1/mc404/simulador/dumboot.bin --sd=disk.img
+
+
+
+1) iniciar o gdb, ou seja iniciar a imagem com -g (rodar amr-sim com -g)
+2) abrir outro terminal
+3)rodar "arm-eabi-gdb ra188115"
+4)digitar no gdb "target remote localhost:5000"
+5) ai se digita no gdb "break line_number" (depois de colocar os break points digita "continue")
+6)ai se digita info register pra ver a memória

@@ -1,0 +1,14 @@
+saida.o: saida.s
+	arm-eabi-as saida.s -o saida.o
+saida: saida.o
+	arm-eabi-ld saida.o -o saida -Ttext=0x77802000 -Tdata=0x77803000
+disk.img: saida 
+	mksd.sh --so /home/specg12-1/mc404/simulador/dummyos.elf --user saida
+run: disk.img
+	(arm-sim --rom=/home/specg12-1/mc404/simulador/dumboot.bin --sd=disk.img 2>&1) > ra188115.out
+
+path:
+	source /home/specg12-1/mc404/simulador/set_path.sh
+
+clean:
+	rm -f disk.img saida saida.o
